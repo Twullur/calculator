@@ -45,6 +45,11 @@ numberButtons.forEach ((button) => {
         if (currOperand === 0 && button.textContent === '.') {
             displayArray[0] = 0;
         };
+
+        if (displayArray.length === 0 && button.textContent === '.') {
+            displayArray[0] = 0;
+        }
+
         if (button.textContent === "." && displayArray.includes(".")) return;
 
         displayArray.push(button.textContent);
@@ -65,20 +70,23 @@ numberButtons.forEach ((button) => {
 
 operatorButtons.forEach((button => {
     button.addEventListener("click", () => {
+        if (currOperand === undefined) {
+            operator = button.textContent; 
+            return;
+        }
+        
         operator = button.textContent;
+
         if (result !== undefined) {
             prevOperand = result;
             display.textContent = result;
         } else {prevOperand = currOperand};
 
-        if (currOperand === undefined) {
-            return;
-        } else {
-            currOperand = undefined;
-            displayArray = [];
-            console.log("operatorButton");
-            checkStatus()
-        }
+
+        currOperand = undefined;
+        displayArray = [];
+        console.log("operatorButton");
+        checkStatus()
     })
 }))
 
@@ -86,6 +94,10 @@ operatorButtons.forEach((button => {
 let operate = () => {
     switch (operator) {
         case '/':
+            if (currOperand === 0) {
+                result = "#ERROR!";
+                return;
+            }
             result = prevOperand / currOperand;
             break;
         case '*':
@@ -98,7 +110,7 @@ let operate = () => {
             result = prevOperand + currOperand;
             break;
     }
-    result = result.toFixed(2);
+    result = parseFloat(result.toFixed(2));
 }
 
 
@@ -113,6 +125,7 @@ equalsButton.addEventListener("click", () => {
     if (currOperand === undefined) {
         return;
     }
+
     display.textContent = result;
     currOperand = result;
     prevOperand = undefined;
