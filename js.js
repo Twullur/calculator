@@ -2,9 +2,12 @@
 
 let numberButtons = document.querySelectorAll(".buttons > .number");
 let display = document.querySelector(".display");
-let operatorButtons = document.querySelectorAll(".buttons > .operator")
-let equalsButton = document.querySelector(".buttons > .equals")
-let clearButton = document.querySelector(".buttons > .clearAll")
+let operatorButtons = document.querySelectorAll(".buttons > .operator");
+let equalsButton = document.querySelector(".buttons > .equals");
+let clearButton = document.querySelector(".buttons > .clearAll");
+let percentButton = document.querySelector(".buttons > .percent");
+let posNegButton = document.querySelector(".buttons > .posNeg");
+let backSpaceButton = document.querySelector(".buttons > .backSpace")
 
 let displayArray = [];
 let currOperand = 0;
@@ -38,7 +41,25 @@ checkStatus()
 
 clearButton.addEventListener("click", clearAll)
 
+percentButton.addEventListener("click", () => {
+    currOperand = currOperand/100;
+    display.textContent = currOperand;
+    operate();
+    checkStatus()
+})
 
+posNegButton.addEventListener("click", () => {
+    currOperand = currOperand * -1;
+    display.textContent = currOperand;
+    if (prevOperand !== undefined && operator !== undefined) {
+        operate();
+    };
+
+    if (prevOperand === undefined) {
+        return;
+    }
+    checkStatus()
+})
 
 numberButtons.forEach ((button) => {
     button.addEventListener("click", () => {
@@ -72,6 +93,7 @@ operatorButtons.forEach((button => {
     button.addEventListener("click", () => {
         if (currOperand === undefined) {
             operator = button.textContent; 
+            checkStatus()
             return;
         }
         
@@ -95,7 +117,7 @@ let operate = () => {
     switch (operator) {
         case '/':
             if (currOperand === 0) {
-                result = "#ERROR!";
+                result = "ERROR";
                 return;
             }
             result = prevOperand / currOperand;
@@ -134,3 +156,4 @@ equalsButton.addEventListener("click", () => {
     displayArray = [];
     checkStatus()
 })
+
