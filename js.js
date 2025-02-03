@@ -7,7 +7,7 @@ let equalsButton = document.querySelector(".buttons > .equals");
 let clearButton = document.querySelector(".buttons > .clearAll");
 let percentButton = document.querySelector(".buttons > .percent");
 let posNegButton = document.querySelector(".buttons > .posNeg");
-let backSpaceButton = document.querySelector(".buttons > .backSpace")
+let backSpaceButton = document.querySelector(".buttons > .backSpace");
 
 let displayArray = [];
 let currOperand = 0;
@@ -28,6 +28,7 @@ function clearAll () {
 function checkStatus() {
     console.log(display.textContent)
     console.log(displayArray)
+    console.log(displayArray.length)
     console.log({result});
     console.log({currOperand});
     console.log({operator});
@@ -42,20 +43,24 @@ checkStatus()
 clearButton.addEventListener("click", clearAll)
 
 backSpaceButton.addEventListener("click", () => {
-    let displayNumberString = currOperand.toString();
-    displayArray = displayNumberString.split('')
-    if (displayArray[0] = '-') {
-        displayArray[0] = 0;
-        display.textContent = 0;
-        currOperand = 0;
+    if (currOperand === 0) {
         return;
-    } else if (displayArray.length > 0) {
+    } else if (currOperand > 0 && currOperand < 10){
+        currOperand = 0;
+        displayArray = [];
+        display.textContent = 0;
+        checkStatus();
+        return;
+    } else {
+        let displayNumberString = currOperand.toString();
+        displayArray = displayNumberString.split('')
         displayArray.pop();
         display.textContent = displayArray.join('');
         currOperand = parseFloat(display.textContent);
         console.log("backSpacebutton")
         checkStatus();
-    } 
+    }
+    
 })
 
 percentButton.addEventListener("click", () => {
@@ -82,17 +87,19 @@ posNegButton.addEventListener("click", () => {
 
 numberButtons.forEach ((button) => {
     button.addEventListener("click", () => {
+        if (currOperand === 0 && button.textContent === '0') {
+            return;
+        }
+
+        if (button.textContent === "." && displayArray.includes(".")) return;
+        
         if (currOperand === 0 && button.textContent === '.') {
             displayArray[0] = 0;
-        };
+        };       
 
         if (displayArray.length === 0 && button.textContent === '.') {
             displayArray[0] = 0;
         }
-
-        if (button.textContent === "." && displayArray.includes(".")) return;
-
-        
 
         displayArray.push(button.textContent);
         currOperand = parseFloat(displayArray.join(''));
