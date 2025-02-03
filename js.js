@@ -41,6 +41,23 @@ checkStatus()
 
 clearButton.addEventListener("click", clearAll)
 
+backSpaceButton.addEventListener("click", () => {
+    let displayNumberString = currOperand.toString();
+    displayArray = displayNumberString.split('')
+    if (displayArray[0] = '-') {
+        displayArray[0] = 0;
+        display.textContent = 0;
+        currOperand = 0;
+        return;
+    } else if (displayArray.length > 0) {
+        displayArray.pop();
+        display.textContent = displayArray.join('');
+        currOperand = parseFloat(display.textContent);
+        console.log("backSpacebutton")
+        checkStatus();
+    } 
+})
+
 percentButton.addEventListener("click", () => {
     currOperand = currOperand/100;
     display.textContent = currOperand;
@@ -49,15 +66,17 @@ percentButton.addEventListener("click", () => {
 })
 
 posNegButton.addEventListener("click", () => {
-    currOperand = currOperand * -1;
+    if (currOperand === undefined) {
+        alert("specify the second operand first")
+        return;
+    } else {currOperand = currOperand * -1};
+
     display.textContent = currOperand;
     if (prevOperand !== undefined && operator !== undefined) {
         operate();
     };
-
-    if (prevOperand === undefined) {
-        return;
-    }
+    
+    console.log("posNeg")
     checkStatus()
 })
 
@@ -72,6 +91,8 @@ numberButtons.forEach ((button) => {
         }
 
         if (button.textContent === "." && displayArray.includes(".")) return;
+
+        
 
         displayArray.push(button.textContent);
         currOperand = parseFloat(displayArray.join(''));
@@ -117,7 +138,7 @@ let operate = () => {
     switch (operator) {
         case '/':
             if (currOperand === 0) {
-                result = "ERROR";
+                result = "ERROR!";
                 return;
             }
             result = prevOperand / currOperand;
