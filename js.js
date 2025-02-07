@@ -1,5 +1,4 @@
 
-
 let numberButtons = document.querySelectorAll(".buttons > .number");
 let display = document.querySelector(".display");
 let operatorButtons = document.querySelectorAll(".buttons > .operator");
@@ -64,10 +63,15 @@ backSpaceButton.addEventListener("click", () => {
 })
 
 percentButton.addEventListener("click", () => {
-    currOperand = currOperand/100;
+    if (currOperand === undefined) {
+        alert("specify the second operand first")
+        return;}
+    currOperand = parseFloat((currOperand/100).toFixed(10));
     display.textContent = currOperand;
-    operate();
+    console.log("percentButton")
     checkStatus()
+    operate();
+    
 })
 
 posNegButton.addEventListener("click", () => {
@@ -182,6 +186,6 @@ equalsButton.addEventListener("click", () => {
     operator = undefined;
     result = undefined;
     displayArray = [];
-    checkStatus()
+    checkStatus();
 })
 
