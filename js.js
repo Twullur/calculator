@@ -7,6 +7,8 @@ let clearButton = document.querySelector(".buttons > .clearAll");
 let percentButton = document.querySelector(".buttons > .percent");
 let posNegButton = document.querySelector(".buttons > .posNeg");
 let backSpaceButton = document.querySelector(".buttons > .backSpace");
+let allButtons = document.querySelectorAll(".buttons > button");
+
 
 let displayArray = [];
 let currOperand = 0;
@@ -49,6 +51,8 @@ backSpaceButton.addEventListener("click", () => {
         displayArray = [];
         display.textContent = 0;
         checkStatus();
+        return;
+    } else if (currOperand[0] = '-' && currOperand.length === 2){
         return;
     } else {
         let displayNumberString = currOperand.toString();
@@ -189,3 +193,69 @@ equalsButton.addEventListener("click", () => {
     checkStatus();
 })
 
+
+
+// keyboard support
+document.addEventListener("keydown", (event) => {
+    const numberKeys = [
+        
+    ]
+    const calculatorKeys = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0",
+        "+",
+        "-",
+        "*",
+        "/",
+        "%",
+        "=",
+        "Enter",
+        "Backspace",
+        "Escape"
+    ];
+    if (!calculatorKeys.includes(event.key)) {
+        return;
+    } else {
+        switch (event.key) {
+            case "Escape":
+                clearButton.click();
+                break;
+            case "Backspace":
+                backSpaceButton.click();
+                break;
+            case "%":
+                percentButton.click();
+                break;
+            case "+":
+            case "-":
+            case "/":
+            case "*":
+                operatorButtons.forEach((button) => {
+                    if (event.key === button.textContent) {
+                        button.click()
+                    };
+                });
+                break;
+            case "Enter":
+            case "=":
+                equalsButton.click();
+                break;
+            default:
+                numberButtons.forEach((button) => {
+                    if (event.key === button.textContent) {
+                        button.click();
+                    }
+                });
+                break;
+        }
+        console.log(event.key);
+    }
+})
